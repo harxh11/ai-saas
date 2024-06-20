@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { ClerkProvider } from '@clerk/nextjs';
+
 
 const IBMPlex = IBM_Plex_Sans({ 
   weight: ["400", "500", "600", "700"],
@@ -10,7 +12,7 @@ const IBMPlex = IBM_Plex_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "AI Saas Application",
+  title: "ArtifexAI",
   description: "AI powered Image generator.",
 };
 
@@ -20,8 +22,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={cn("font-IBMPlex antialiased", IBMPlex.variable)}>{children}</body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={cn("font-IBMPlex antialiased", IBMPlex.variable)}>
+          {children}
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
