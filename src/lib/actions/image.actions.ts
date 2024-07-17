@@ -1,6 +1,5 @@
 // "use server";
 import { revalidatePath } from "next/cache";
-import { AddImageParams, UpdateImageParams } from "../../../types/index";
 import { handleError } from "../../lib/utils";
 import { connectToDatabase } from "../database/mongoose";
 import User from "../database/models/user.model";
