@@ -5,6 +5,14 @@ import { handleError } from "../../lib/utils";
 import { connectToDatabase } from "../database/mongoose";
 import User from "../database/models/user.model";
 import Image from "../database/models/Image.model";
+import { redirect } from "next/navigation";
+
+const populateUser = (query: any) =>
+  query.populate({
+    path: "author",
+    model: "User",
+    select: "_id firstName lastName",
+  });
 
 export async function addImage({ image, userId, path }: AddImageParams) {
   try {
@@ -32,10 +40,21 @@ export async function updateImage({ image, userId, path }: UpdateImageParams) {
   try {
     await connectToDatabase();
 
-    const imageToUpdate = await Image;
+    const imageToUpdate = await Image.findById(image._id);
+
+    if (!imageToUpdate || imageToUpdate.author.toHexString() !== userId) {
+      throw new Error("Unauthorized or image not found!");
+    }
+
+    const updatedImage = await Image.findByIdAndUpdate(
+      imageToUpdate._id,
+      image,
+      { new: true }
+    );
+
     revalidatePath(path);
 
-    return JSON.parse(JSON.stringify(image));
+    return JSON.parse(JSON.stringify(updatedImage));
   } catch (error) {
     handleError(error);
   }
@@ -44,20 +63,20 @@ export async function updateImage({ image, userId, path }: UpdateImageParams) {
 export async function deleteImage(image: string) {
   try {
     await connectToDatabase();
-
-    revalidatePath(path);
-
-    return JSON.parse(JSON.stringify(image));
+    await Image.findByIdAndDelete(image);
   } catch (error) {
     handleError(error);
+  } finally {
+    redirect("/");
   }
 }
 
 export async function getImageById(imageId: string) {
   try {
     await connectToDatabase();
+    const image = await populateUser(Image.findById(imageId));
 
-    revalidatePath(path);
+    if (!image) throw new Error("Image not found");
 
     return JSON.parse(JSON.stringify(image));
   } catch (error) {
