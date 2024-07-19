@@ -6,6 +6,11 @@ import User from "../database/models/user.model";
 import Image from "../database/models/Image.model";
 import { connectToDatabase } from "../database/mongoose";
 import { handleError } from "../utils";
+import {
+  AddImageParams,
+  CreateUserParams,
+  UpdateUserParams,
+} from "../../../types";
 // import { CreateUserParams, UpdateUserParams } from "../../../types";
 
 // CREATE

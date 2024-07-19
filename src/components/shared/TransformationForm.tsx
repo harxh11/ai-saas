@@ -38,6 +38,7 @@ import { updateCredits } from "@/lib/actions/user.action";
 import { getCldImageUrl } from "next-cloudinary";
 import { addImage, updateImage } from "@/lib/actions/image.actions";
 import { useRouter } from "next/navigation";
+import { TransformationFormProps, Transformations } from "../../../types";
 // import { InsufficientCreditsModal } from "./InsufficientCreditsModal"
 
 export const formSchema = z.object({

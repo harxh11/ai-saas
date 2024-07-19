@@ -3,6 +3,7 @@ import Image from "next/image";
 import { CldImage } from "next-cloudinary";
 import { dataUrl, debounce, getImageSize } from "@/lib/utils";
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
+import { TransformedImageProps } from "../../../types";
 
 const TransformedImage = ({
   image,
